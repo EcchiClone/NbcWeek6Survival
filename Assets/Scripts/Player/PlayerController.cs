@@ -9,23 +9,23 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     private Vector2 curMovementInput;
     public float jumpForce;
-    public LayerMask groundLayerMask; // °ú¿¬ ¿ëµµ´Â...
+    public LayerMask groundLayerMask; // ê³¼ì—° ìš©ë„ëŠ”...
 
     [Header("Look")]
     public Transform cameraContainer;
     public float minXLook;
     public float maxXLook;
-    private float camCurXRot; // min°ú max »çÀÌ¿¡ À§Ä¡ÇÒ Ä«¸Ş¶ó »óÇÏ °¢µµ
+    private float camCurXRot; // minê³¼ max ì‚¬ì´ì— ìœ„ì¹˜í•  ì¹´ë©”ë¼ ìƒí•˜ ê°ë„
     public float lookSensitivity;
 
     private Vector2 mouseDelta;
 
-    [HideInInspector] // publicÀÎµ¥, °¡¸®·Á°í ¸¸µå´Â ¿ëµµ
+    [HideInInspector] // publicì¸ë°, ê°€ë¦¬ë ¤ê³  ë§Œë“œëŠ” ìš©ë„
     public bool canLook = true;
 
-    private Rigidbody _rigidbody; // ¾ğ´õ¹Ù ºÙÀÌÁö ¾ÊÀ¸¸é Component¶ó°í ÇÏ´Â Å¬·¡½º ³»¿¡ ±¸ÇöµÈ rigidbody¿Í È¥¿ëµÉ ¿©Áö¶§¹®¿¡ ³ì»ö ¹ØÁÙ. ÇöÀç´Â »ç¿ëÇÏÁö ¾Ê±â ¶§¹®¿¡ »ó°ü ¾øÁö¸¸ ¹ØÁÙÀÌ ½Å°æ¾²ÀÎ´Ù¸é ¾ğ´õ¹Ù
+    private Rigidbody _rigidbody; // ì–¸ë”ë°” ë¶™ì´ì§€ ì•Šìœ¼ë©´ Componentë¼ê³  í•˜ëŠ” í´ë˜ìŠ¤ ë‚´ì— êµ¬í˜„ëœ rigidbodyì™€ í˜¼ìš©ë  ì—¬ì§€ë•Œë¬¸ì— ë…¹ìƒ‰ ë°‘ì¤„. í˜„ì¬ëŠ” ì‚¬ìš©í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— ìƒê´€ ì—†ì§€ë§Œ ë°‘ì¤„ì´ ì‹ ê²½ì“°ì¸ë‹¤ë©´ ì–¸ë”ë°”
 
-    public static PlayerController instance; // ÀÏ´Ü ´ÜÀÏÇÃ·¹ÀÌ¾î¿©¼­ °£Æí »ç¿ëÀ» À§ÇÑ staticÀ» ÀÌ¿ëÇÏ¿© ½Ì±ÛÅæÀ¸·Î.
+    public static PlayerController instance; // ì¼ë‹¨ ë‹¨ì¼í”Œë ˆì´ì–´ì—¬ì„œ ê°„í¸ ì‚¬ìš©ì„ ìœ„í•œ staticì„ ì´ìš©í•˜ì—¬ ì‹±ê¸€í†¤ìœ¼ë¡œ.
 
     private void Awake()
     {
@@ -36,11 +36,11 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked; 
     }
-    private void FixedUpdate() // ÇÁ·¹ÀÓ´ç Ã³¸®ÀÎ Update¿Í´Â ´Ù¸£°Ô ÀÏÁ¤ÇÑ ½Ã°£ °£°İÀ¸·Î È£ÃâµÇ¾î, ¹°¸® °è»ê°ú °ü·ÃµÈ ÀÛ¾÷¿¡ ÀûÇÕÇÔ.
+    private void FixedUpdate() // í”„ë ˆì„ë‹¹ ì²˜ë¦¬ì¸ Updateì™€ëŠ” ë‹¤ë¥´ê²Œ ì¼ì •í•œ ì‹œê°„ ê°„ê²©ìœ¼ë¡œ í˜¸ì¶œë˜ì–´, ë¬¼ë¦¬ ê³„ì‚°ê³¼ ê´€ë ¨ëœ ì‘ì—…ì— ì í•©í•¨.
     {
         Move();
     }
-    private void LateUpdate() // ¸ğµç Ã³¸®°¡ ³¡³ª°í LateUpdate°¡ µ¿ÀÛ. º¸Åë Ä«¸Ş¶ó ÀÛ¾÷¿¡ ¸¹ÀÌ »ç¿ëÇÑ´Ù.
+    private void LateUpdate() // ëª¨ë“  ì²˜ë¦¬ê°€ ëë‚˜ê³  LateUpdateê°€ ë™ì‘. ë³´í†µ ì¹´ë©”ë¼ ì‘ì—…ì— ë§ì´ ì‚¬ìš©í•œë‹¤.
     {
         if (canLook)
         {
@@ -52,46 +52,46 @@ public class PlayerController : MonoBehaviour
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
         dir *= moveSpeed;
 
-        dir.y = _rigidbody.velocity.y; // y°ªÀ» ¾ø¾Ö°Ú´Ù°í Ã³¸®ÇÑ´Ù°í´Â ÇÏ´Âµ¥ Àß ¸ğ¸£°ÚÀ½. ³ªÁß¿¡ È®ÀÎ ¿ä¸Á
+        dir.y = _rigidbody.velocity.y; // yê°’ì„ ì—†ì• ê² ë‹¤ê³  ì²˜ë¦¬í•œë‹¤ê³ ëŠ” í•˜ëŠ”ë° ì˜ ëª¨ë¥´ê² ìŒ. ë‚˜ì¤‘ì— í™•ì¸ ìš”ë§
         _rigidbody.velocity = dir;
 
     }
     void CameraLook()
     {
-        camCurXRot += mouseDelta.y * lookSensitivity; // ¸¶¿ì½º »óÇÏ ÀÌµ¿À¸·Î Ä«¸Ş¶ó°¡ XÃà È¸Àü
-        camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook); // min°ú max »çÀÌ¿¡ camCurXRot °¡µÎ±â
-        cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0); // Ä«¸Ş¶ó¿¡ ÇöÀç È¸ÀüÄ¡ Àû¿ë
+        camCurXRot += mouseDelta.y * lookSensitivity; // ë§ˆìš°ìŠ¤ ìƒí•˜ ì´ë™ìœ¼ë¡œ ì¹´ë©”ë¼ê°€ Xì¶• íšŒì „
+        camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook); // minê³¼ max ì‚¬ì´ì— camCurXRot ê°€ë‘ê¸°
+        cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0); // ì¹´ë©”ë¼ì— í˜„ì¬ íšŒì „ì¹˜ ì ìš©
 
-        transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0); // ÇÃ·¹ÀÌ¾î ÁÂ¿ì È¸ÀüÄ¡ ¹Ù·Î Àû¿ë
-        // ¸¶¿ì½º·Î Ä«¸Ş¶ó ¿òÁ÷ÀÌ±â ÁØºñ ¿Ï·á
+        transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0); // í”Œë ˆì´ì–´ ì¢Œìš° íšŒì „ì¹˜ ë°”ë¡œ ì ìš©
+        // ë§ˆìš°ìŠ¤ë¡œ ì¹´ë©”ë¼ ì›€ì§ì´ê¸° ì¤€ë¹„ ì™„ë£Œ
 
-        //  Ä«¸Ş¶ó´Â localEulerAnglesÀ» »ç¿ëÇß´Âµ¥, transform(ÇÃ·¹ÀÌ¾î)Àº eulerAngles¸¦ »ç¿ëÇÑ ÀÌÀ¯
-        //  localEulerAngles ´Â ºÎ¸ğ ¿ÀºêÁ§Æ®¿¡ ´ëÇÑ ·ÎÄÃ ÁÂÇ¥°è¿¡¼­ÀÇ ¿ÀºêÁ§Æ®ÀÇ È¸Àü °¢µµ¸¦ ³ªÅ¸³¿.
-        //  eulerAngles ´Â ±Û·Î¹ú(¿ùµå) ÁÂÇ¥°è¿¡¼­ÀÇ ¿ÀºêÁ§Æ®ÀÇ È¸Àü °¢µµ¸¦ ³ªÅ¸³¿
-        //  Ä«¸Ş¶óÀÇ È¸ÀüÀº ÇÃ·¹ÀÌ¾î¿¡ Á¾¼ÓµÇµµ·Ï, ÇÃ·¹ÀÌ¾îÀÇ È¸ÀüÀº ¿ùµåÁÂÇ¥°è¿¡ ´ëÇØ Àı´ëÀûÀÎ È¸ÀüÀ¸·Î Ã³¸®ÇÏµµ·Ï ÇÑ °Í.
+        //  ì¹´ë©”ë¼ëŠ” localEulerAnglesì„ ì‚¬ìš©í–ˆëŠ”ë°, transform(í”Œë ˆì´ì–´)ì€ eulerAnglesë¥¼ ì‚¬ìš©í•œ ì´ìœ 
+        //  localEulerAngles ëŠ” ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•œ ë¡œì»¬ ì¢Œí‘œê³„ì—ì„œì˜ ì˜¤ë¸Œì íŠ¸ì˜ íšŒì „ ê°ë„ë¥¼ ë‚˜íƒ€ëƒ„.
+        //  eulerAngles ëŠ” ê¸€ë¡œë²Œ(ì›”ë“œ) ì¢Œí‘œê³„ì—ì„œì˜ ì˜¤ë¸Œì íŠ¸ì˜ íšŒì „ ê°ë„ë¥¼ ë‚˜íƒ€ëƒ„
+        //  ì¹´ë©”ë¼ì˜ íšŒì „ì€ í”Œë ˆì´ì–´ì— ì¢…ì†ë˜ë„ë¡, í”Œë ˆì´ì–´ì˜ íšŒì „ì€ ì›”ë“œì¢Œí‘œê³„ì— ëŒ€í•´ ì ˆëŒ€ì ì¸ íšŒì „ìœ¼ë¡œ ì²˜ë¦¬í•˜ë„ë¡ í•œ ê²ƒ.
     }
-    public void OnLookInput(InputAction.CallbackContext context) // ÃßÈÄ¿¡ ÀÌº¥Æ®¿Í ¿¬°á ÇØ ÁÙ ¸Ş¼­µå
+    public void OnLookInput(InputAction.CallbackContext context) // ì¶”í›„ì— ì´ë²¤íŠ¸ì™€ ì—°ê²° í•´ ì¤„ ë©”ì„œë“œ
     {
-        //  ** °³³ä º¸Ãæ **
+        //  ** ê°œë… ë³´ì¶© **
 
         //  1. Callback
-        //  CallbackÀº ±âº»ÀûÀ¸·Î ¾î¶² ÀÌº¥Æ®°¡ ¹ß»ıÇßÀ» ¶§ ½Ã½ºÅÛÀÌ³ª ´Ù¸¥ ÄÚµå¿¡ ÀÇÇØ ÀÚµ¿À¸·Î È£ÃâµÇ´Â ¸Ş¼­µå(ÇÔ¼ö)¸¦ ¸»ÇÔ!!
-        //  Áï, Æ¯Á¤ ÀÌº¥Æ®°¡ ¹ß»ıÇÏ¸é ±×¿¡ ¹İÀÀÇÏ¿© ½ÇÇàµÇµµ·Ï ¹Ì¸® ÁöÁ¤ÇØµĞ ÇÔ¼ö
-        //  ÀÚµ¿ È£Ãâ, ÀÌº¥Æ® ±â¹İ ÇÁ·Î±×·¡¹Ö, ºñµ¿±âÀû ½ÇÇà ÀÇ Æ¯Â¡À» °¡Áü.
-        //  InputAction.CallbackContext´Â ÀÔ·Â ÀÌº¥Æ®¿¡ ´ëÇÑ Á¤º¸¸¦ Á¦°øÇÏ´Â °´Ã¼ÀÌ¸ç
-        //  ÀÔ·Â ½Ã½ºÅÛ¿¡¼­ ¹ß»ıÇÏ´Â ´Ù¾çÇÑ ÀÌº¥Æ®(¿¹: ¹öÆ° ´©¸§, ¸¶¿ì½º ¿òÁ÷ÀÓ, Á¶ÀÌ½ºÆ½ Á¶ÀÛ µî)¿¡ ´ëÇÑ ¼¼ºÎ Á¤º¸¸¦ Æ÷ÇÔÇÏ°í ÀÖÀ½
+        //  Callbackì€ ê¸°ë³¸ì ìœ¼ë¡œ ì–´ë–¤ ì´ë²¤íŠ¸ê°€ ë°œìƒí–ˆì„ ë•Œ ì‹œìŠ¤í…œì´ë‚˜ ë‹¤ë¥¸ ì½”ë“œì— ì˜í•´ ìë™ìœ¼ë¡œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ(í•¨ìˆ˜)ë¥¼ ë§í•¨!!
+        //  ì¦‰, íŠ¹ì • ì´ë²¤íŠ¸ê°€ ë°œìƒí•˜ë©´ ê·¸ì— ë°˜ì‘í•˜ì—¬ ì‹¤í–‰ë˜ë„ë¡ ë¯¸ë¦¬ ì§€ì •í•´ë‘” í•¨ìˆ˜
+        //  ìë™ í˜¸ì¶œ, ì´ë²¤íŠ¸ ê¸°ë°˜ í”„ë¡œê·¸ë˜ë°, ë¹„ë™ê¸°ì  ì‹¤í–‰ ì˜ íŠ¹ì§•ì„ ê°€ì§.
+        //  InputAction.CallbackContextëŠ” ì…ë ¥ ì´ë²¤íŠ¸ì— ëŒ€í•œ ì •ë³´ë¥¼ ì œê³µí•˜ëŠ” ê°ì²´ì´ë©°
+        //  ì…ë ¥ ì‹œìŠ¤í…œì—ì„œ ë°œìƒí•˜ëŠ” ë‹¤ì–‘í•œ ì´ë²¤íŠ¸(ì˜ˆ: ë²„íŠ¼ ëˆ„ë¦„, ë§ˆìš°ìŠ¤ ì›€ì§ì„, ì¡°ì´ìŠ¤í‹± ì¡°ì‘ ë“±)ì— ëŒ€í•œ ì„¸ë¶€ ì •ë³´ë¥¼ í¬í•¨í•˜ê³  ìˆìŒ
 
-        //  2. Coroutine (»ı°¢³­ °â °°ÀÌ Á¤¸®)
-        //  ÄÚ·çÆ¾Àº ÇÁ·Î±×·¥ÀÇ ¿©·¯ ºÎºĞÀÌ ¸¶Ä¡ µ¿½Ã¿¡ ½ÇÇàµÇ´Â °ÍÃ³·³ Ã³¸®µÉ ¼ö ÀÖ°Ô ÇØÁÖ¸é¼­µµ, ½ÇÁ¦·Î´Â ÇÑ ½º·¹µå ³»¿¡¼­ ½ÇÇà ¼ø¼­¸¦ ¼¼¹ĞÇÏ°Ô Á¦¾îÇÒ ¼ö ÀÖ´Â ¹æ¹ıÀ» Á¦°øÇÑ´Ù.
-        //  Áï, ½º·¹µåº¸´Ù ¸®¼Ò½º¸¦ Àû°Ô »ç¿ëÇÏÁö¸¸ ºñ½ÁÇÑ ÀÛµ¿ÀÎ ºñµ¿±â ÀÛ¾÷À» ½±°Ô ÇÒ ¼ö ÀÖ°Ô ÇØÁÜ
+        //  2. Coroutine (ìƒê°ë‚œ ê²¸ ê°™ì´ ì •ë¦¬)
+        //  ì½”ë£¨í‹´ì€ í”„ë¡œê·¸ë¨ì˜ ì—¬ëŸ¬ ë¶€ë¶„ì´ ë§ˆì¹˜ ë™ì‹œì— ì‹¤í–‰ë˜ëŠ” ê²ƒì²˜ëŸ¼ ì²˜ë¦¬ë  ìˆ˜ ìˆê²Œ í•´ì£¼ë©´ì„œë„, ì‹¤ì œë¡œëŠ” í•œ ìŠ¤ë ˆë“œ ë‚´ì—ì„œ ì‹¤í–‰ ìˆœì„œë¥¼ ì„¸ë°€í•˜ê²Œ ì œì–´í•  ìˆ˜ ìˆëŠ” ë°©ë²•ì„ ì œê³µí•œë‹¤.
+        //  ì¦‰, ìŠ¤ë ˆë“œë³´ë‹¤ ë¦¬ì†ŒìŠ¤ë¥¼ ì ê²Œ ì‚¬ìš©í•˜ì§€ë§Œ ë¹„ìŠ·í•œ ì‘ë™ì¸ ë¹„ë™ê¸° ì‘ì—…ì„ ì‰½ê²Œ í•  ìˆ˜ ìˆê²Œ í•´ì¤Œ
 
 
-        // mouseDelta°ªÀ» ¹Ş¾Æ¿È
+        // mouseDeltaê°’ì„ ë°›ì•„ì˜´
         mouseDelta = context.ReadValue<Vector2>();
     }
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Performed) // Å°¸¦ ´©¸£°í ÀÖ´Â µµÁß. Ã³À½ ´­·ÈÀ»¶§´Â Started, ³õÀ» ¶§´Â Canceled
+        if(context.phase == InputActionPhase.Performed) // í‚¤ë¥¼ ëˆ„ë¥´ê³  ìˆëŠ” ë„ì¤‘. ì²˜ìŒ ëˆŒë ¸ì„ë•ŒëŠ” Started, ë†“ì„ ë•ŒëŠ” Canceled
         {
             curMovementInput = context.ReadValue<Vector2>();
         }
@@ -101,4 +101,48 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnJumpInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started) // í‚¤ ì…ë ¥ì„ ë°›ì€ ìˆœê°„ì—ë§Œ ì í”„í•˜ë„ë¡ Started ì‚¬ìš©
+        {
+            if(IsGrounded())
+                _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+                //  ForceModeì— ëŒ€í•´
+                //  .Force : ì§€ì†ì ì¸ í˜ì„ ë¬¼ì²´ì— ì ìš©. ë‰´í„´ì˜ ìš´ë™ ë²•ì¹™ì— ë”°ë¼ ì‘ë™í•˜ë©°, ë¬¼ì²´ì— ì ì§„ì ìœ¼ë¡œ ê°€ì†ì„ ì œê³µí•œë‹¤.
+                //  .Impulse : ìˆœê°„ì ìœ¼ë¡œ í° í˜ì„ ë¬¼ì²´ì— ì ìš©.
+                //  .VelocityChange : ë¬¼ì²´ì˜ ì†ë„ë¥¼ ì¦‰ì‹œ ë³€ê²½í•˜ë©°, ì´ ë•Œ ì ìš©ë˜ëŠ” í˜ì€ ë¬¼ì²´ì˜ ì§ˆëŸ‰ì— ì˜í–¥ì„ ë°›ì§€ ì•ŠìŒ.
+                //                    ì¦‰, ë¬¼ì²´ì˜ ì†ë„ë¥¼ ì§ì ‘ ì¡°ì •í•˜ê³  ì‹¶ì„ ë•Œ ì‚¬ìš©. ìˆœê°„ì ìœ¼ë¡œ ë¬¼ì²´ë¥¼ ì •ì§€, ë°˜ëŒ€ë°©í–¥ìœ¼ë¡œ ë¹ ë¥´ê²Œ ê°€ì†.
+                //  .Acceleration : ë¬¼ì²´ì— ì§€ì†ì ì¸ ê°€ì†ì„ ì ìš©. Forceì™€ëŠ” ë‹¤ë¥´ê²Œ ì§ˆëŸ‰ì„ ë¬´ì‹œí•˜ê³  ê°€ì†ë„ë§Œì„ ì ìš©
+        }
+    }
+
+    private bool IsGrounded()
+    {
+        Ray[] rays = new Ray[4]
+        {
+            new Ray(transform.position + (transform.forward * 0.2f) + (Vector3.up*0.01f), Vector3.down),// ì‹œì‘ìœ„ì¹˜ì™€ ë°©í–¥ ì§€ì •
+            new Ray(transform.position + (-transform.forward * 0.2f) + (Vector3.up*0.01f), Vector3.down),
+            new Ray(transform.position + (transform.right * 0.2f) + (Vector3.up*0.01f), Vector3.down),
+            new Ray(transform.position + (-transform.right * 0.2f) + (Vector3.up*0.01f), Vector3.down),
+        };
+        for(int i = 0; i < rays.Length; i++)
+        {
+            // ì•„ë˜ì˜ 0.1f ëŠ” Rayì˜ ì‹œì‘ì ìœ¼ë¡œë¶€í„°ì˜ ê±°ë¦¬.
+            // Rayê°€ groundLayerMaskë¥¼ ê°ì§€í•˜ë©´ trueë¥¼ ë¦¬í„´í•œë‹¤.
+            // í”Œë ˆì´ì–´ ì½œë¼ì´ë”ëŠ” ì´ ì¡°ê±´ì— ì „í˜€ ê´€ì—¬í•˜ì§€ ì•ŠëŠ”ë‹¤. ì˜¤ì§ Rayê°€ groundLayerMaskë¥¼ ë§Œë‚˜ëŠëƒ ë¿
+            if (Physics.Raycast(rays[i], 0.1f, groundLayerMask)) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position + (transform.forward * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (-transform.forward * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (transform.right * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
+    }
 }
