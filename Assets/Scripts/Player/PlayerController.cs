@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate() // 프레임당 처리인 Update와는 다르게 일정한 시간 간격으로 호출되어, 물리 계산과 관련된 작업에 적합함.
     {
-        
+        Move();
     }
     private void LateUpdate() // 모든 처리가 끝나고 LateUpdate가 동작. 보통 카메라 작업에 많이 사용한다.
     {
@@ -46,6 +46,15 @@ public class PlayerController : MonoBehaviour
         {
             CameraLook();
         }
+    }
+    private void Move()
+    {
+        Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
+        dir *= moveSpeed;
+
+        dir.y = _rigidbody.velocity.y; // y값을 없애겠다고 처리한다고는 하는데 잘 모르겠음. 나중에 확인 요망
+        _rigidbody.velocity = dir;
+
     }
     void CameraLook()
     {
@@ -79,8 +88,17 @@ public class PlayerController : MonoBehaviour
 
         // mouseDelta값을 받아옴
         mouseDelta = context.ReadValue<Vector2>();
-
-        //  
+    }
+    public void OnMoveInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed) // 키를 누르고 있는 도중. 처음 눌렸을때는 Started, 놓을 때는 Canceled
+        {
+            curMovementInput = context.ReadValue<Vector2>();
+        }
+        else if(context.phase == InputActionPhase.Canceled)
+        {
+            curMovementInput = Vector2.zero;
+        }
     }
 
 }
