@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     private Vector2 curMovementInput;
     public float jumpForce;
-    public LayerMask groundLayerMask; // 과연 용도는...
+    public LayerMask groundLayerMask; 
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -144,5 +144,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawRay(transform.position + (-transform.forward * 0.2f), Vector3.down);
         Gizmos.DrawRay(transform.position + (transform.right * 0.2f), Vector3.down);
         Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
+    }
+    public void ToggleCursor(bool toggle)
+    {
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !toggle;
     }
 }
