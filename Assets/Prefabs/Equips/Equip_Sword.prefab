@@ -49,8 +49,8 @@ MonoBehaviour:
   attackRate: 0
   attackDistance: 0
   doesGatherResources: 0
-  doesDealDamage: 0
-  damage: 0
+  doesDealDamage: 1
+  damage: 10
 --- !u!95 &7005622286443857990
 Animator:
   serializedVersion: 5
